@@ -4,7 +4,8 @@
 # Video input is not configurable script expects sources to be mp4 encodes of m2ts from BDMV i.e. 00001.mp4
 # Source chapter file in XML format is required
 # This script works by using ffprobe to get the length of each video and accumulating this total in a loop
-# and splitting based on the closest timestamp to the total runtime while still being less than the total runtime# This script expects that your source has a chapter realtively close to the end of each video
+# and splitting based on the closest timestamp to the total runtime while still being less than the total runtime
+# This script expects that your source has a chapter realtively close to the end of each video
 # Usage: ./path_of_script /path/to/chapters.xml
 ##
 if [ -z "$1" ]; then
