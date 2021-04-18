@@ -1,13 +1,4 @@
 #!/bin/bash
-##
-# Extremly buggy and unclean code for splitting singular chapter files from BDMV sources
-# Video input is not configurable script expects sources to be mp4 encodes of m2ts from BDMV i.e. 00001.mp4
-# Source chapter file in XML format is required
-# This script works by using ffprobe to get the length of each video and accumulating this total in a loop
-# and splitting based on the closest timestamp to the total runtime while still being less than the total runtime
-# This script expects that your source has a chapter realtively close to the end of each video
-# Usage: ./path_of_script /path/to/chapters.xml
-##
 if [ -z "$1" ]; then
 	echo "error: no xml input" && exit 1
 elif [ -d "$1" ]; then
@@ -70,7 +61,9 @@ for ((i=0;i<"${#chap_ends[@]}";i++)); do
 		last="${chap_ends[$i]}"
 		continue
 	fi
-	head -7 "$1" > "$out".xml
+	header="$(grep -n EditionUID "$1")"
+	header="${header%%:*}"
+	head -"$header" "$1" > "$out".xml || exit 1
 	sed -n "$last","$cur"p "$1" >> "$out".xml
 	if [ -n "$(tail -1 "$out".xml | grep '</Chapters>')" ]; then
 		continue
